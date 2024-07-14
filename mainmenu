@@ -21,14 +21,7 @@ do
             ;;
         "List Data")
             echo "You chose to list Data."
-            dir_list=$(ls -d */ 2>/dev/null)
-            if [ -z "$dir_list" ]; then
-               echo "list is empty"
-            else
-                for dir in $dir_list; do
-                   echo "$dir"
-                done
-            fi
+           ./list
             ;;
         "Drop Data")
             echo "You chose to Drop Data."
