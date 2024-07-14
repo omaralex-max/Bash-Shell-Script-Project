@@ -2,8 +2,11 @@
 
 echo "Please select a query to execute:"
 
+#-----------------------------------choose which query you want to start
+
 PS3="Enter your choice: "
 options=("Create Data" "Connect To Data" "List Data" "Drop Data" "Exit")
+
 
 select opt in "${options[@]}"
 do
