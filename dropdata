@@ -1,12 +1,14 @@
 #!/bin/bash
 
-# ------------------------enter the data you want to delete
-read -p "Enter The Database Name : " data_name
+# ---------------------------enter the database name to delete
+read -p "Enter The Database Name: " data_name
 
-if [[ -d $data_name ]]
-then
-	rm -r $data_name
-	echo "Database Deleted Successfully"
+# ---------------------------Check if the database exists
+if [[ -d "./data/$data_name" ]]; then
+
+    rm -r "./data/$data_name"
+	echo "Database deleted Successfully"
+
 else
-	echo "this data doesn't exist"
+    echo "This Database does not exist"
 fi

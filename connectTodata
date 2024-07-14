@@ -2,7 +2,7 @@
 
 read -p "Enter The Data Name You Want To Connect: " data_name
 
-if [ -d "$data_name" ]; then
+if [ -d "./data/$data_name" ]; then
     echo "You Connected To Data Successfully"
     cd "$data_name"
     echo "Please select a query to execute:"

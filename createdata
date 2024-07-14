@@ -8,11 +8,10 @@ if [ -d "$data_name" ]; then
     echo
     echo "Data Already Exists!"
 else
-    mkdir "$data_name"
+    mkdir "./data/$data_name"
     echo
     echo "Data Created Successfully"
 fi
 
 # ---------------------Navigate to data
 cd "$data_name"
-
