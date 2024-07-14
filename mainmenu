@@ -1,0 +1,41 @@
+#!/bin/bash
+
+echo "Please select a query to execute:"
+
+PS3="Enter your choice: "
+options=("Create Data" "Connect To Data" "List Data" "Drop Data" "Exit")
+
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Create Data")
+            echo "You chose to create Data."
+            ./createdata
+            ;;
+        "Connect To Data")
+            echo "You chose to connect to Data."
+            ./connectTodata
+            ;;
+        "List Data")
+            echo "You chose to list Data."
+            dir_list=$(ls -d */ 2>/dev/null)
+            if [ -z "$dir_list" ]; then
+               echo "list is empty"
+            else
+                for dir in $dir_list; do
+                   echo "$dir"
+                done
+            fi
+            ;;
+        "Drop Data")
+            echo "You chose to Drop Data."
+            ./dropdata
+            ;;
+        "Exit")
+            break
+            ;;
+        *)
+            echo "Invalid option $REPLY"
+            ;;
+    esac
+done
