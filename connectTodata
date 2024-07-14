@@ -1,0 +1,55 @@
+#!/bin/bash
+
+read -p "Enter The Data Name You Want To Connect: " data_name
+
+if [ -d "$data_name" ]; then
+    echo "You Connected To Data Successfully"
+    cd "$data_name"
+    echo "Please select a query to execute:"
+
+    PS3="Enter your choice: "
+    options=("Create Tables" "Drop Table" "List tables" "Insert in Tables" "Select from Tables" "Delete from Tables" "Update Table" "Exit")
+
+    select opt in "${options[@]}"
+    do
+        case $opt in
+            "Create Table")
+                echo "You chose to create tables."
+                # Add your create table script or commands here
+                ;;
+            "Drop Table")
+                echo "You chose to create tables."
+                # Add your create table script or commands here
+                ;;
+            "List tables")
+                echo "You chose to list tables."
+                # Add your list tables script or commands here
+                ;;
+            "Insert into Table")
+                echo "You chose to insert into tables."
+                # Add your insert into tables script or commands here
+                ;;
+            "Select from Table")
+                echo "You chose to select from tables."
+                # Add your select from tables script or commands here
+                ;;
+            "Delete from Table")
+                echo "You chose to delete from tables."
+                # Add your delete from tables script or commands here
+                ;;
+            "Update Table")
+                echo "You chose to delete from tables."
+                # Add your delete from tables script or commands here
+                ;;
+            "Exit")
+                break
+                ;;
+            *)
+                echo "Invalid option $REPLY"
+                ;;
+        esac
+    done
+else 
+    echo "Data Doesn't Exist"
+fi
+
