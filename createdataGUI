@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Function to display Yad GUI for entering database name
+get_database_name() {
+    data_name=$(yad --title="Enter Database Name" --text="Please Enter Database Name:" --entry --width=300 --button="OK:0" --button="Cancel:1")
+    echo "$data_name"
+}
+
+# Prompt user to enter the database name
+data_name=$(get_database_name)
+
+# Check if the database name is empty or if user canceled
+if [ -z "$data_name" ]; then
+    echo "No database name entered or canceled."
+    exit 1
+fi
+
+# Check if the database directory already exists
+if [ -d "./data/$data_name" ]; then
+    yad --title="Database Exists" --text="Database '$data_name' already exists!" --button="OK:0"
+else
+    # Create the database directory
+    mkdir "./data/$data_name"
+    yad --title="Database Created" --text="Database '$data_name' created successfully." --button="OK:0"
+fi
+
+# Navigate to the database directory
+cd "./data/$data_name"
+
+# Optional: Display a final message
+echo "Navigated to database: $data_name"

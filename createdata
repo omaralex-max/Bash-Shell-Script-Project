@@ -13,5 +13,4 @@ else
     echo "Data Created Successfully"
 fi
 
-# ---------------------Navigate to data
-cd "$data_name"
+

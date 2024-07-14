@@ -1,0 +1,26 @@
+#!/bin/bash
+
+
+# Function to get the directory list
+get_directory_list() {
+    local dir_list=$(find ./data -maxdepth 1 -type d -printf "%P\n" 2>/dev/null)
+    if [ -z "$dir_list" ]; then
+        echo "list is empty"
+    else
+        echo "$dir_list"
+    fi
+}
+
+# ---------------------------------Get directory list
+dir_list=$(get_directory_list)
+
+# --------------------------------Debug output to check what's being captured
+echo "Debug: Directory List - $dir_list"
+
+# --------------------------------Check if list is empty
+if [ "$dir_list" == "list is empty" ]; then
+    yad --title="Directory List" --text="No directories found." --button="OK:0"
+else
+    # ----------------------------Show directory list in a Yad text info dialog
+    yad --title="Directory List" --text-info --width=400 --height=300 --text="$dir_list" --button="OK:0"
+fi

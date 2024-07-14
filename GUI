@@ -1,0 +1,8 @@
+#!/bin/bash
+
+yad --title "Database Operations" --form --columns=2 --width=400 --height=200 \
+--field="Create Data":FBTN "bash -c './createdataGUI'" \
+--field="Drop Data":FBTN "bash -c './dropdata'" \
+--field="Connect To Data":FBTN "bash -c './connectTodata'" \
+--field="List Data":FBTN "bash -c './list'" \
+--button="Exit":1

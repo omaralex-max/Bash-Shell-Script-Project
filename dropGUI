@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# ---------------------------enter the database name to delete
+get_database_name() {
+    data_name=$(yad --title="Enter Database Name" --text="Please Enter Database Name:" --entry --width=300 --button="OK:0" --button="Cancel:1")
+    echo "$data_name"
+}
+data_name=$(get_database_name)
+# ---------------------------Check if the database exists
+if [[ -d "./data/$data_name" ]]; then
+
+    rm -r "./data/$data_name"
+	echo "Database deleted Successfully"
+
+else
+    echo "This Database does not exist"
+fi
