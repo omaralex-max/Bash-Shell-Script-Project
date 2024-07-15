@@ -1,0 +1,14 @@
+#!/bin/bash
+
+start_directory="."
+
+list=$(find "$start_directory" -type f)
+
+for file in $list; do
+    
+    filename=$(basename "$file")
+    
+    if echo "$filename" | grep -q '^[[:alpha:]]*$'; then
+        echo "$file"
+    fi
+done
