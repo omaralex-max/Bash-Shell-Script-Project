@@ -1,0 +1,140 @@
+#!/bin/bash
+
+# Check if table exists
+table_name=""
+while true;
+do
+   read -p "Please enter table name: " table_name
+ meta_data="$table_name@meta_data"
+            
+ if [ -f "./$table_name" ];
+  then
+         break
+  else
+   echo "Table '$table_name' does not exist. Please choose a name that exists."
+  
+             
+fi
+        
+       
+done
+
+#..............................................
+
+
+# Function to check if a primary key value already exists
+
+function check_primary_key {
+    local pk_value="$1"
+    pk_field=$(head -n 1 "$meta_data" | awk -F ':' '{print $(NF-1)}')
+    if grep -q ":$pk_value$" "./$table_name"; then
+        echo "Primary key '$pk_value' already exists in field '$pk_field'."
+        return 1
+    else
+        return 0
+    fi
+}
+#..............................................
+
+# Function to validate input based on data type
+function validate_input {
+    local value="$1"
+    local data_type="$2"
+    
+    case "$data_type" in
+        int)
+            if [[ "$value" =~ ^[0-9]+$ ]]; then
+                return 0  
+            else
+                echo "Invalid input. Expected an integer."
+                return 1 
+            fi
+            ;;
+        char)
+            if [[ "$value" =~ ^[a-zA-Z]+$ ]]; then
+                return 0 
+            else
+                echo "Invalid input. Expected alphabetical characters only."
+                return 1  
+            fi
+            ;;
+        *)
+            echo "Unsupported data type: $data_type"
+            return 1  
+            ;;
+    esac
+}
+#...................................................
+
+# Reads the first line (field names)  
+fields=$(head -n 1 "./$meta_data")
+
+
+# Reads the second line (data types)
+data_types=$(head -n 2 "$meta_data" | tail -n 1)
+
+
+# Prompt user to enter data for each field
+echo "Enter data for each field(press enter to finish):"
+while true;
+do
+fields_arr=($(echo "$fields" | tr ':' ' '))
+data_types_arr=($(echo "$data_types" | tr ':' ' '))
+
+
+# data insertion 
+insert_queries=()
+for ((i = 0; i < ${#fields_arr[@]}; i++)); do
+    field_name="${fields_arr[i]}"
+    data_type="${data_types_arr[i]}"
+    
+    while true; do
+        # Read input value
+        read -p "Enter value for '$field_name' ($data_type): " value
+        
+        
+        # Break loop if user presses enter
+        if [ -z "$value" ]; then
+            break 2
+        fi
+        
+        # Validate input based on data type
+        if validate_input "$value" "$data_type"; then
+        
+            # Validate primary key if applicable
+            if [[ "${field_name}" == "${pk_field}" ]]; then
+                while ! check_primary_key "$value"; do
+                    read -p "Enter a unique value for '$field_name' ($data_type): " value
+                    if [ -z "$value" ]; then
+                        continue 2  # Restart input loop if user presses enter
+                    fi
+                    if validate_input "$value" "$data_type"; then
+                        break  # Valid input, exit while loop
+                    fi
+                done
+            fi
+            
+            # Append validated value to insertion query
+            insert_queries+=("$value")
+            break  
+        else
+            # Prompt again for current field if validation fails
+            continue
+        fi
+    done
+done
+    
+    
+    insert_queries+=("$value")
+done
+#join all queries into a string
+   insert_query=$(IFS=":"; echo "${insert_queries[*]}")
+   
+# Append the data to the table file
+if [ -n "$insert_query" ]; then
+        echo "$insert_query" >> ./$table_name
+fi
+done
+
+
+echo "Data inserted successfully."
