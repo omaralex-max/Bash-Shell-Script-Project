@@ -27,6 +27,8 @@ else
     # Create the data directory if it does not exist
     if [ ! -d "./data" ]; then
         mkdir "./data"
+        echo
+        echo "Data directory  Created Successfully"
     fi
 
     # Create the database directory
