@@ -1,6 +1,31 @@
 #!/bin/bash    
-read -p "please enter table name: " table_name
+
+#validation function
+validate_field_input() {
+           if [[ ! $1 =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
+              return 1
+           else
+              return 0
+           fi
+}
+
+
+while true; 
+do
+    read -p "please enter table name: " table_name
+
+    if validate_field_input "$table_name"; then
+        break
+    else
+        echo "Invalid table name. please remove any numbers or special characters"
+    fi
+    
+done
+
+
 meta_data=$table_name@meta_data
+
+
 
 if [ -d ./$table_name ]
 then
@@ -20,10 +45,9 @@ else
     #creating fields
 for ((c = 1; c <= $fields_no; ((c++)))); 
     do
-
-        echo "Please enter Field no.$c Name: "
-
-        read field
+      echo "Please enter Field no.$c Name: "
+       read field
+        
 
         if [ $c = $fields_no ];
         
@@ -58,7 +82,7 @@ while true;
     
         echo >>./$meta_data
 
-    echo -n "int:" >>./$meta_data
+    
 
     for ((i = 1; i <= $fields_no; ((i++)))); 
     
@@ -79,9 +103,9 @@ while true;
                 esac
             done
         else
-            select datatype in "int" "varchar" "date" "Exit"; do
+            select datatype in "int" "varchar" "Exit"; do
                 case $datatype in
-                "int" | "varchar" | "date")
+                "int" | "varchar" )
                     echo -n "$datatype:" >>./$meta_data
                     break
                     ;;
