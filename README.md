@@ -29,7 +29,5 @@ the terminal will display selection which is
 - update table  
 - exite
 
-
-  #to start the project you enter in the terminal ./mainmenu
-
-  -after you give the premisions to all the files in the project
+# to start the project you enter in the terminal ./mainmenu
+  - after you give the premisions to all the files in the project
