@@ -1,16 +1,14 @@
-#!/bin/bash
-
+#!/bin/bash    
 read -p "please enter table name: " table_name
-meta_data=.$table_name@meta_data
+meta_data=$table_name@meta_data
 
-if [ -d "$DB_name/$table_name" ]; 
-
+if [ -d ./$table_name ]
 then
     echo
     echo "Table Exists"
 else
-    touch $DB_name/$table_name
-    touch $DB_name/$meta_data
+    touch ./$table_name
+    touch ./$meta_data 
     echo
     echo "Table Created"
     
@@ -30,9 +28,9 @@ for ((c = 1; c <= $fields_no; ((c++))));
         if [ $c = $fields_no ];
         
          then
-            echo -n "$field" >>$DB_name/$meta_data
+            echo -n "$field" >> ./$meta_data
         else
-            echo -n "$field:" >>$DB_name/$meta_data
+            echo -n "$field:" >> ./$meta_data
             
         fi
     done
@@ -44,7 +42,7 @@ while true;
         case $primary_key in
             yes)
                 read -p "Please enter the primary key field name: " pk_field
-                echo -n "@PK.$pk_field:" >> $DB_name/$meta_data
+                echo -n "@PK.$pk_field:" >> ./$meta_data
                 break
                 ;;
             no)
@@ -58,9 +56,9 @@ while true;
         
         ##
     
-        echo >>$DB_name/$meta_data
+        echo >>./$meta_data
 
-    echo -n "int:" >>$DB_name/$meta_data
+    echo -n "int:" >>./$meta_data
 
     for ((i = 1; i <= $fields_no; ((i++)))); 
     
@@ -73,7 +71,7 @@ while true;
             select datatype in "int" "varchar" "Exit"; do
                 case $datatype in
                 "int" | "varchar")
-                    echo -n "$datatype" >>$DB_name/$meta_data
+                    echo -n "$datatype" >> ./$meta_data
                     break
                     ;;
                 "Exit") echo "Switched To Table Menu , Please Press Enter To Show Menu " ; break ;;
@@ -84,7 +82,7 @@ while true;
             select datatype in "int" "varchar" "date" "Exit"; do
                 case $datatype in
                 "int" | "varchar" | "date")
-                    echo -n "$datatype:" >>$DB_name/$meta_data
+                    echo -n "$datatype:" >>./$meta_data
                     break
                     ;;
                 "Exit")  break ;;
@@ -95,7 +93,5 @@ while true;
     done
 
 fi
-
-
 
 
