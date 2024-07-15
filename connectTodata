@@ -4,24 +4,25 @@ read -p "Enter The Data Name You Want To Connect: " data_name
 
 if [ -d "./data/$data_name" ]; then
     echo "You Connected To Data Successfully"
-    cd "$data_name"
+    cd "./data/$data_name"
+    echo "Current directory: $(pwd)"
+    echo "you are currently using $data_name"
     echo "Please select a query to execute:"
-
     PS3="Enter your choice: "
-    options=("Create Table" "Drop Table" "List tables" "Insert in Tables" "Select from Tables" "Delete from Tables" "Update Table" "Exit")
+    options=("Create Table" "Drop Table" "List Tables" "Insert into Table" "Select from Table" "Delete from Table" "Update Table" "Exit")
 
     select opt in "${options[@]}"
     do
         case $opt in
             "Create Table")
                 echo "You chose to create tables."
-                ./create
-                ;;
-            "Drop Table")
-                echo "You chose to create tables."
                 # Add your create table script or commands here
                 ;;
-            "List tables")
+            "Drop Table")
+                echo "You chose to drop tables."
+                # Add your drop table script or commands here
+                ;;
+            "List Tables")
                 echo "You chose to list tables."
                 # Add your list tables script or commands here
                 ;;
@@ -38,10 +39,11 @@ if [ -d "./data/$data_name" ]; then
                 # Add your delete from tables script or commands here
                 ;;
             "Update Table")
-                echo "You chose to delete from tables."
-                # Add your delete from tables script or commands here
+                echo "You chose to update tables."
+                # Add your update table script or commands here
                 ;;
             "Exit")
+                echo "Exiting."
                 break
                 ;;
             *)
@@ -52,4 +54,3 @@ if [ -d "./data/$data_name" ]; then
 else 
     echo "Data Doesn't Exist"
 fi
-
