@@ -64,9 +64,9 @@ for ((c = 1; c <= $fields_no; ((c++))));
         echo "Enter Field no.$i Datatype: "
     
        if [ $i = $fields_no ]; then
-            select datatype in "int" "varchar" "Exit"; do
+            select datatype in "int" "char" "Exit"; do
                 case $datatype in
-                "int" | "varchar")
+                "int" | "char")
                     echo -n "$datatype" >> ./$meta_data
                     break
                     ;;
@@ -75,9 +75,9 @@ for ((c = 1; c <= $fields_no; ((c++))));
                 esac
             done
         else
-            select datatype in "int" "varchar" "Exit"; do
+            select datatype in "int" "char" "Exit"; do
                 case $datatype in
-                "int" | "varchar" )
+                "int" | "char" )
                     echo -n "$datatype:" >>./$meta_data
                     break
                     ;;
