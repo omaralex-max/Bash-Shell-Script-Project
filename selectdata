@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Function to validate table and column names
+# ---------------------------------------------------------- validate table and column names
 validate_field_input() {
     if [[ ! $1 =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
         return 1
@@ -8,35 +8,43 @@ validate_field_input() {
         return 0
     fi
 }
-# Function to select data by a specific column value
-select_data_by_column() {
-   
-  local column_name=$1
 
+# ------------------------------------------------------select and display content of by column
+select_data_by_column() {
+    local column_name=$1
+
+    #-------------------------------------------------------- Check if the column exists in the metadata
     if grep -q "^$column_name:" "./$table_name@meta_data"; then
-        awk -F ":" -v col="$column_name" 'NR==1 
-                                          { 
-                                             idx = index($0, col); next
-                                          } 
-                                          {
-                                          print substr($0, idx-1, index($0, ":", idx)-idx+1)}' 
-                                          "./$table_name"
-    else
+ awk -F ":" -v col="$column_name" '{
+            for (i = 1; i <= NF; i++) {
+                if ($i == col) {
+                    idx = i
+                    break
+                }
+            }
+            if (idx) {
+                for (i = 1; i <= NF; i++) {
+                    if (i == idx) {
+                        printf "%s\n", $i
+                    }
+                }
+            }
+        }' "./$table_name"    else
         echo "Column '$column_name' does not exist in table '$table_name'."
     fi
 }
 
-# Main menu for select operation
+# ------------------------------------------- select operation
 select_table() {
     read -p "Please enter the table name to select data from: " table_name
     
-    # Validate table name
+    # ----------------------------------Validate table name
     if ! validate_field_input "$table_name"; then
         echo "Invalid table name."
         exit 1
     fi
     
-    # Check if the table file exists
+    # ------------------------------------Check if the table file exists
     if [ ! -f "./$table_name" ]; then
         echo "Table '$table_name' does not exist."
         exit 1
@@ -54,7 +62,7 @@ select_table() {
             "Select Data by PK")
                 read -p "Enter the primary key: " pk
                 
-                # Check if Primary Key exists
+                # ------------------------------------------Check if Primary Key exists
                 ID_exist=$(awk -F ":" -v pk="$pk" '{if($NF==pk) print "Primary_key_exist" }' "./$table_name")
 
                 if [ "$ID_exist" = "Primary_key_exist" ]; then
@@ -65,21 +73,7 @@ select_table() {
                     echo "Primary key '$pk' does not exist in table '$table_name'."
                 fi
                 ;;
-                "Select Data by column")
-                    read -p "Enter the primary key: " pk
-                
-                    # Check if Primary Key exists
-                    ID_exist=$(awk -F ":" -v pk="$pk" '{if($NF==pk) print "Primary_key_exist" }' "./$table_name")
-
-                if [ "$ID_exist" = "Primary_key_exist" ]; then
-                    Record_no=$(awk -F ":" -v pk="$pk" '{if($NF==pk) print $0}' "./$table_name")
-                    echo "$Record_no"
-                    echo "Record is selected successfully from '$table_name'."
-                else
-                    echo "Primary key '$pk' does not exist in table '$table_name'."
-                fi
-                ;;
-                 "Select Data by Column")
+            "Select Data by Column")
                 read -p "Enter the column name to select data: " column_name
                 select_data_by_column "$column_name"
                 ;;
@@ -94,5 +88,5 @@ select_table() {
     done
 }
 
-# Run the select table function
+
 select_table
