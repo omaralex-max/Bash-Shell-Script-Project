@@ -1,5 +1,5 @@
 #!/bin/bash    
-
+table_name=""
 #validation function
 validate_field_input() {
            if [[ ! $1 =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
@@ -9,37 +9,30 @@ validate_field_input() {
            fi
 }
 
-
-while true; 
+#loop to check if table already exists
+while true;
 do
-    read -p "please enter table name: " table_name
+   read -p "Please enter table name: " table_name
 
-    if validate_field_input "$table_name"; then
-        break
-    else
-        echo "Invalid table name. please remove any numbers or special characters"
-    fi
+        if validate_field_input "$table_name"; then
+            meta_data="$table_name@meta_data"
+            
+            if [ -f "./$table_name" ]; then
+                echo "Table '$table_name' already exists. Please choose another name."
+            else
+                touch "./$table_name"
+                touch "./$meta_data" 
+                echo "Table '$table_name' created."
+
+                break  
+            fi
+        else
+            echo "Invalid table name. Please remove any numbers or special characters."
+        fi
     
 done
-
-
-meta_data=$table_name@meta_data
-
-
-
-if [ -d ./$table_name ]
-then
-    echo
-    echo "Table Exists"
-else
-    touch ./$table_name
-    touch ./$meta_data 
-    echo
-    echo "Table Created"
     
-     
-    
-
+  
     read -p "please type number of fields: " fields_no 
     
     #creating fields
