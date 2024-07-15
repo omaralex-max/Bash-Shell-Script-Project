@@ -52,27 +52,6 @@ for ((c = 1; c <= $fields_no; ((c++))));
         fi
     done
     
-     #checking for primary key
-while true;
-    do
-      read -p "Do you want to specify a primary key for this table? (yes/no): " primary_key
-        case $primary_key in
-            yes)
-                read -p "Please enter the primary key field name: " pk_field
-                echo -n ":@PK.$pk_field:" >> ./$meta_data
-                break
-                ;;
-            no)
-                break
-                ;;
-            *)
-                echo "Please answer yes or no."
-                ;;
-        esac
-     done
-        
-        ##
-    
         echo >>./$meta_data
 
     
@@ -108,7 +87,26 @@ while true;
             done
         fi
     done
-
-fi
-
+    echo >>./$meta_data
+    while true;
+    do
+      read -p "Do you want to specify a primary key for this table? (yes/no): " primary_key
+        case $primary_key in
+            yes)
+                read -p "Please enter the primary key field name: " pk_field
+                echo -n "@PK.$pk_field" >> ./$meta_data
+                break
+                ;;
+            no)
+                break
+                ;;
+            *)
+                echo "Please answer yes or no."
+                ;;
+        esac
+     done
+        
+        ##
+         echo >>./$meta_data
+        
 
