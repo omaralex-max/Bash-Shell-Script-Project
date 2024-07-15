@@ -8,6 +8,23 @@ validate_field_input() {
         return 0
     fi
 }
+# Function to select data by a specific column value
+select_data_by_column() {
+   
+  local column_name=$1
+
+    if grep -q "^$column_name:" "./$table_name@meta_data"; then
+        awk -F ":" -v col="$column_name" 'NR==1 
+                                          { 
+                                             idx = index($0, col); next
+                                          } 
+                                          {
+                                          print substr($0, idx-1, index($0, ":", idx)-idx+1)}' 
+                                          "./$table_name"
+    else
+        echo "Column '$column_name' does not exist in table '$table_name'."
+    fi
+}
 
 # Main menu for select operation
 select_table() {
@@ -26,7 +43,7 @@ select_table() {
     fi
     
     PS3="Please select a query option: "
-    options=("Select All Data" "Select Data by PK" "Exit")
+    options=("Select All Data" "Select Data by PK" "Select Data by Column" "Exit")
     
     select opt in "${options[@]}"; do
         case $opt in
@@ -47,6 +64,24 @@ select_table() {
                 else
                     echo "Primary key '$pk' does not exist in table '$table_name'."
                 fi
+                ;;
+                "Select Data by column")
+                    read -p "Enter the primary key: " pk
+                
+                    # Check if Primary Key exists
+                    ID_exist=$(awk -F ":" -v pk="$pk" '{if($NF==pk) print "Primary_key_exist" }' "./$table_name")
+
+                if [ "$ID_exist" = "Primary_key_exist" ]; then
+                    Record_no=$(awk -F ":" -v pk="$pk" '{if($NF==pk) print $0}' "./$table_name")
+                    echo "$Record_no"
+                    echo "Record is selected successfully from '$table_name'."
+                else
+                    echo "Primary key '$pk' does not exist in table '$table_name'."
+                fi
+                ;;
+                 "Select Data by Column")
+                read -p "Enter the column name to select data: " column_name
+                select_data_by_column "$column_name"
                 ;;
             "Exit")
                 echo "Exiting."
