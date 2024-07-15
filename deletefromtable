@@ -1,0 +1,35 @@
+#!/bin/bash
+
+
+
+# Prompt user to enter table name to operate on
+read -p "Please enter Table To Select From : " table_name
+
+# Check if table exists
+if [[ ! -f ./$table_name ]];
+ then
+    echo "Table '$table_name' does not exist."
+    exit 
+fi
+
+# Menu for selecting operation
+select selectOption in  "Delete All" "Delete row" "Exit"; 
+do
+    case $selectOption in
+        
+        "Delete All")
+            echo -n "Are you sure you want to delete all records in $table_name? (yes/no): "
+            read confirm
+            if [[ "$confirm" == "yes" ]]; then
+                echo "" > ./$table_name
+                echo "All records deleted successfully from $table_name."
+            else
+                echo "deletion operation canceled."
+            fi
+            ;;
+            
+         
+    esac
+        
+done
+
