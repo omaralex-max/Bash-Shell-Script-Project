@@ -1,0 +1,14 @@
+#!/bin/bash
+read -p "Enter Table Name To drop: " table_name
+meta_data=$table_name@meta_data
+
+if [ -f "./$table_name" ]; then
+    echo
+    rm -r ./$table_name
+    rm -r ./$meta_data
+
+    echo "selected Table Deleted "
+else
+    echo
+    echo "The table name you entered Doesn't Exist!"
+fi
