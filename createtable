@@ -66,7 +66,7 @@ while true;
         case $primary_key in
             yes)
                 read -p "Please enter the primary key field name: " pk_field
-                echo -n "@PK.$pk_field:" >> ./$meta_data
+                echo -n ":@PK.$pk_field:" >> ./$meta_data
                 break
                 ;;
             no)
