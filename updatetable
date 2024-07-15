@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# --------------------------------validate table and column names
+validate_field_input() {
+    if [[ ! $1 =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
+        return 1
+    else
+        return 0
+    fi
+}
+
+# ----------------------------------update data in the table
+update_data() {
+    read -p "Enter the table name to update data in: " table_name
+    
+    # --------------------------------------Validate table name
+    if ! validate_field_input "$table_name"; then
+        echo "Invalid table name."
+        exit 1
+    fi
+    
+    # ---------------------------------------Check if the table file exists
+    if [ ! -f "./$table_name" ]; then
+        echo "Table '$table_name' does not exist."
+        exit 1
+    fi
+    
+    read -p "Enter the primary key to update: " pk
+    
+    # ------------------------------------------Check if Primary Key exists
+    ID_exist=$(awk -F ":" -v pk="$pk" '{if($NF==pk) print "Primary_key_exist" }' "./$table_name")
+    
+    if [ "$ID_exist" != "Primary_key_exist" ]; then
+        echo "Primary key '$pk' does not exist in table '$table_name'."
+        exit 1
+    fi
+    
+    echo "Enter new data for the record (leave blank to keep existing values):"
+
+    # --------------------------------------determin the number of columns except the last one (primary key)
+    num_columns=$(awk -F ":" '{print NF}' "./$table_name" | head -n 1)
+    num_columns=$((num_columns - 1))
+
+    for (( i=1; i<=num_columns; i++ )); do
+        current_value=$(awk -F ":" -v pk="$pk" -v col="$i" '$NF==pk {print $col}' "./$table_name")
+        read -p "Column $i (current: $current_value): " new_value
+        new_data+="${new_value}:"
+    done
+
+    
+    new_data=${new_data%:}
+
+    # -------------------------------------------Update the recorded data
+    awk -F ":" -v pk="$pk" -v new_data="$new_data" '
+        BEGIN {
+            FS=":";
+            OFS=":";
+        }
+        {
+            if ($NF == pk) {
+                split(new_data, fields, ":");
+                for (i=1; i<=NF-1; i++) {
+                    $i = fields[i];
+                }
+            }
+            print $0;
+        }
+    ' "./$table_name" > "./tmp_$table_name" && mv "./tmp_$table_name" "./$table_name"
+
+    echo "Data updated successfully for primary key '$pk' in table '$table_name'."
+}
+
+update_data
