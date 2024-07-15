@@ -5,8 +5,8 @@ read -p "Enter The Data Name You Want To Connect: " data_name
 if [ -d "./data/$data_name" ]; then
     echo "You Connected To Data Successfully"
     cd "./data/$data_name"
-    echo "Current directory: $(pwd)"
-    echo "you are currently using $data_name"
+    current_dir=$(basename "$PWD")
+    echo "using: $current_dir"
     echo "Please select a query to execute:"
     PS3="Enter your choice: "
     options=("Create Table" "Drop Table" "List Tables" "Insert into Table" "Select from Table" "Delete from Table" "Update Table" "Exit")
