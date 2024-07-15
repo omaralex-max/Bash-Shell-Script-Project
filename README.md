@@ -9,7 +9,7 @@ made by
 # the fist part 
 
 is connected to the data it self
-as when you run the project using terminal Displays the first selection which is
+as when you run the project using terminal it Displays the first selection which is
 - create data
 - connect to date
 - list data
@@ -19,6 +19,7 @@ as when you run the project using terminal Displays the first selection which is
 # the second part
 
 when you choose connect to data it displays the queries which edit the data after you choose which data you want to edit 
+
 the terminal will display selection which is
 - create table
 - drop table 
