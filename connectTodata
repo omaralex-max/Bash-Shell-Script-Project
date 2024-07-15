@@ -16,31 +16,31 @@ if [ -d "./data/$data_name" ]; then
         case $opt in
             "Create Table")
                 echo "You chose to create tables."
-                # Add your create table script or commands here
+                ./createtable
                 ;;
             "Drop Table")
                 echo "You chose to drop tables."
-                # Add your drop table script or commands here
+               ./droptable
                 ;;
             "List Tables")
                 echo "You chose to list tables."
-                # Add your list tables script or commands here
+                ./listtable
                 ;;
             "Insert into Table")
                 echo "You chose to insert into tables."
-                # Add your insert into tables script or commands here
+               ./insertintotable
                 ;;
             "Select from Table")
                 echo "You chose to select from tables."
-                # Add your select from tables script or commands here
+                ./Selectfromtable
                 ;;
             "Delete from Table")
                 echo "You chose to delete from tables."
-                # Add your delete from tables script or commands here
+                ./deletefromtable
                 ;;
             "Update Table")
                 echo "You chose to update tables."
-                # Add your update table script or commands here
+                ./updatetable
                 ;;
             "Exit")
                 echo "Exiting."
