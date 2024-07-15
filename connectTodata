@@ -16,7 +16,9 @@ if [ -d "./data/$data_name" ]; then
         case $opt in
             "Create Table")
                 echo "You chose to create tables."
+                
                 ../../createtable
+
                 ;;
             "Drop Table")
                 echo "You chose to drop tables."
@@ -44,6 +46,7 @@ if [ -d "./data/$data_name" ]; then
                 ;;
             "Exit")
                 echo "Exiting."
+                ../../mainmenu
                 break
                 ;;
             *)
