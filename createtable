@@ -1,0 +1,101 @@
+#!/bin/bash
+
+read -p "please enter table name: " table_name
+meta_data=.$table_name@meta_data
+
+if [ -d "$DB_name/$table_name" ]; 
+
+then
+    echo
+    echo "Table Exists"
+else
+    touch $DB_name/$table_name
+    touch $DB_name/$meta_data
+    echo
+    echo "Table Created"
+    
+     
+    
+
+    read -p "please type number of fields: " fields_no 
+    
+    #creating fields
+for ((c = 1; c <= $fields_no; ((c++)))); 
+    do
+
+        echo "Please enter Field no.$c Name: "
+
+        read field
+
+        if [ $c = $fields_no ];
+        
+         then
+            echo -n "$field" >>$DB_name/$meta_data
+        else
+            echo -n "$field:" >>$DB_name/$meta_data
+            
+        fi
+    done
+    
+     #checking for primary key
+while true;
+    do
+      read -p "Do you want to specify a primary key for this table? (yes/no): " primary_key
+        case $primary_key in
+            yes)
+                read -p "Please enter the primary key field name: " pk_field
+                echo -n "@PK.$pk_field:" >> $DB_name/$meta_data
+                break
+                ;;
+            no)
+                break
+                ;;
+            *)
+                echo "Please answer yes or no."
+                ;;
+        esac
+     done
+        
+        ##
+    
+        echo >>$DB_name/$meta_data
+
+    echo -n "int:" >>$DB_name/$meta_data
+
+    for ((i = 1; i <= $fields_no; ((i++)))); 
+    
+    
+    #read data type for each input field
+      do
+        echo "Enter Field no.$i Datatype: "
+    
+       if [ $i = $fields_no ]; then
+            select datatype in "int" "varchar" "Exit"; do
+                case $datatype in
+                "int" | "varchar")
+                    echo -n "$datatype" >>$DB_name/$meta_data
+                    break
+                    ;;
+                "Exit") echo "Switched To Table Menu , Please Press Enter To Show Menu " ; break ;;
+                *) echo $REPLY is not one of the choices. ;;
+                esac
+            done
+        else
+            select datatype in "int" "varchar" "date" "Exit"; do
+                case $datatype in
+                "int" | "varchar" | "date")
+                    echo -n "$datatype:" >>$DB_name/$meta_data
+                    break
+                    ;;
+                "Exit")  break ;;
+                *) echo $REPLY is invalid. please try again ;;
+                esac
+            done
+        fi
+    done
+
+fi
+
+
+
+
