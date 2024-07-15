@@ -8,14 +8,14 @@ if [ -d "./data/$data_name" ]; then
     echo "Please select a query to execute:"
 
     PS3="Enter your choice: "
-    options=("Create Tables" "Drop Table" "List tables" "Insert in Tables" "Select from Tables" "Delete from Tables" "Update Table" "Exit")
+    options=("Create Table" "Drop Table" "List tables" "Insert in Tables" "Select from Tables" "Delete from Tables" "Update Table" "Exit")
 
     select opt in "${options[@]}"
     do
         case $opt in
             "Create Table")
                 echo "You chose to create tables."
-                # Add your create table script or commands here
+                ./create
                 ;;
             "Drop Table")
                 echo "You chose to create tables."
