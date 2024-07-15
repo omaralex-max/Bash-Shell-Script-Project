@@ -18,7 +18,6 @@ if [ -d "./data/$data_name" ]; then
                 echo "You chose to create tables."
                 
                 ../../createtable
-
                 ;;
             "Drop Table")
                 echo "You chose to drop tables."
@@ -34,7 +33,7 @@ if [ -d "./data/$data_name" ]; then
                 ;;
             "Select from Table")
                 echo "You chose to select from tables."
-                ../../Selectfromtable
+                ../../selectdata
                 ;;
             "Delete from Table")
                 echo "You chose to delete from tables."

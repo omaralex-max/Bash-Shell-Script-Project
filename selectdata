@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Function to validate table and column names
+validate_field_input() {
+    if [[ ! $1 =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
+        return 1
+    else
+        return 0
+    fi
+}
+
+# Main menu for select operation
+select_table() {
+    read -p "Please enter the table name to select data from: " table_name
+    
+    # Validate table name
+    if ! validate_field_input "$table_name"; then
+        echo "Invalid table name."
+        exit 1
+    fi
+    
+    # Check if the table file exists
+    if [ ! -f "./$table_name" ]; then
+        echo "Table '$table_name' does not exist."
+        exit 1
+    fi
+    
+    PS3="Please select a query option: "
+    options=("Select All Data" "Select Data by PK" "Exit")
+    
+    select opt in "${options[@]}"; do
+        case $opt in
+            "Select All Data")
+                echo "Selecting all data from table '$table_name':"
+                cat "./$table_name"
+                ;;
+            "Select Data by PK")
+                read -p "Enter the primary key: " pk
+                
+                # Check if Primary Key exists
+                ID_exist=$(awk -F ":" -v pk="$pk" '{if($NF==pk) print "Primary_key_exist" }' "./$table_name")
+
+                if [ "$ID_exist" = "Primary_key_exist" ]; then
+                    Record_no=$(awk -F ":" -v pk="$pk" '{if($NF==pk) print $0}' "./$table_name")
+                    echo "$Record_no"
+                    echo "Record is selected successfully from '$table_name'."
+                else
+                    echo "Primary key '$pk' does not exist in table '$table_name'."
+                fi
+                ;;
+            "Exit")
+                echo "Exiting."
+                break
+                ;;
+            *)
+                echo "Invalid option $REPLY"
+                ;;
+        esac
+    done
+}
+
+# Run the select table function
+select_table
