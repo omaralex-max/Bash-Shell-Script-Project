@@ -1,16 +1,36 @@
 #!/bin/bash
 
-# --------------------------Enter the data
-read -p "Please Enter Database Name: " data_name
+# Function to validate the database name
+validate_db_name() {
+    if [[ ! $1 =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
+        return 1
+    else
+        return 0
+    fi
+}
 
-# ------------------------Check if the data already exists if not create data and enter it
-if [ -d "$data_name" ]; then
+while true; do
+    read -p "Please Enter Database Name: " data_name
+
+    if validate_db_name "$data_name"; then
+        break
+    else
+        echo "Invalid database name. The name must not start with a number or special character and must not contain spaces."
+    fi
+done
+
+# Check if the database already exists
+if [ -d "./data/$data_name" ]; then
     echo
     echo "Data Already Exists!"
 else
+    # Create the data directory if it does not exist
+    if [ ! -d "./data" ]; then
+        mkdir "./data"
+    fi
+
+    # Create the database directory
     mkdir "./data/$data_name"
     echo
     echo "Data Created Successfully"
 fi
-
-
