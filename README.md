@@ -4,7 +4,7 @@ this is a database project based on mysql using bash shell script
 this project consistes of two parts
 made by 
 - omar ayman mohammed
-- omar wael
+- omar wael abdelziz
 
 # the fist part 
 
